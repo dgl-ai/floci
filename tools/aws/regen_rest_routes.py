@@ -66,6 +66,7 @@ MODELS: dict[str, str] = {
     "s3": "s3",
     "s3control": "s3",
     "scheduler": "scheduler",
+    "xray": "xray",
 }
 
 # The models whose routes are rewritten onto an internal prefix, and the prefix they are rewritten
@@ -76,6 +77,11 @@ INTERNAL_ROUTES: dict[str, tuple[str, bool]] = {
     # them onto, and the key they name is an ARN, whose slashes the rewritten path holds: the label
     # spans them, as the controller's own path does.
     "payment-cryptography-data": ("/_paymentcryptography", True),
+    # Signer and X-Ray routes collide with S3's path-style ones and are rewritten onto the prefix
+    # their route filter owns, so their routes are vendored as the rewritten path: the action and
+    # the request's resource labels both resolve from it.
+    "signer": ("/_signer", False),
+    "xray": ("/_xray", False),
 }
 
 
